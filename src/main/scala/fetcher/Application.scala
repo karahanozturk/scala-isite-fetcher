@@ -48,6 +48,4 @@ class Application(queue: Queue, messageHandlers: List[MessageHandler], parser: C
 
   def informSuccess(msg: Message) = System.out.println("use logger and statsd")
   def informError(errorMsg: String) = System.out.println("use logger and statsd")
-
-  startPolling()
 }

@@ -10,9 +10,7 @@ import scala.concurrent.Future
 class Queue(sqs: AmazonSQSClient, qConf: QConfig) {
 
   def pollMessage() = Future {
-    val request = new ReceiveMessageRequest(qConf.url)
-    request.setWaitTimeSeconds(qConf.waitTimeSeconds)
-    request.setMaxNumberOfMessages(qConf.maxNumberOfMessages)
+    val request = new ReceiveMessageRequest(qConf.url).withWaitTimeSeconds(qConf.waitTimeSeconds).withMaxNumberOfMessages(qConf.maxNumberOfMessages)
     sqs.receiveMessage(request).getMessages.get(0)
   }
 
