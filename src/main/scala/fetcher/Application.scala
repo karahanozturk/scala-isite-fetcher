@@ -1,26 +1,28 @@
 package fetcher
 
 import akka.actor.ActorSystem
-import com.amazonaws.services.sqs.model.Message
+import com.timgroup.statsd.StatsDClient
+import com.typesafe.scalalogging.Logger
+import org.slf4j.LoggerFactory
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
 import scala.util.{Failure, Success}
+
 
 case class Notification(typ: String, contentId: String, fileId: String)
 
-class Application(queue: Queue, messageHandlers: List[MessageHandler], parser: ContentParser, pollDelay: Int) {
+class Application(queue: Queue, messageHandlers: List[MessageHandler], statsD: StatsDClient) {
+  val logger = Logger(LoggerFactory.getLogger("iSite Fetcher"))
   val scheduler = ActorSystem().scheduler
 
   def delegateMessage(msg: Message) = {
-    val notification = parser.extractNotification(msg)
-    val availableHandlers = messageHandlers.filter(_.canHandle(notification.contentId))
+    val availableHandlers = messageHandlers.filter(_.canHandle(msg.notification.contentId))
 
     availableHandlers.size match {
       case 0 => informError("No handler found")
       case 1 =>
         val handler = availableHandlers.head
-        handler.handle(notification) map {
+        handler.handle(msg.notification) map {
           case Success(_) => deleteMsg(msg)
           case Failure(t) => informError(t.getMessage)
         }
@@ -34,18 +36,21 @@ class Application(queue: Queue, messageHandlers: List[MessageHandler], parser: C
   }
 
   def startPolling() {
-    scheduler.scheduleOnce(pollDelay seconds) {
-      queue pollMessage() onComplete {
-        case Success(msg) =>
-          delegateMessage(msg)
-          startPolling()
-        case Failure(t) =>
-          informError(t.getMessage)
-          startPolling()
-      }
+    queue pollMessage() onComplete {
+      case Success(msg) =>
+        delegateMessage(msg)
+      case Failure(t) =>
+        informError(t.getMessage)
     }
   }
 
-  def informSuccess(msg: Message) = System.out.println("use logger and statsd")
-  def informError(errorMsg: String) = System.out.println("use logger and statsd")
+  def informSuccess(msg: Message) = {
+    logger.info("Message successfully processed" + msg)
+    statsD.increment("messages_processed")
+  }
+
+  def informError(errorMsg: String) = {
+    logger.info("Failed to processMessage processed")
+    statsD.increment("processing_failures")
+  }
 }

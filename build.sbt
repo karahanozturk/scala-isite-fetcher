@@ -18,7 +18,9 @@ libraryDependencies ++= Seq(
   "net.debasishg" %% "redisclient" % "2.13",
   "net.databinder.dispatch" %% "dispatch-core" % "0.11.0",
   "com.amazonaws" % "aws-java-sdk" % "1.8.10.2",
-  "org.specs2" % "specs2_2.11" % "2.3.11"
+  "org.specs2" % "specs2_2.11" % "2.3.11",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
+  "com.timgroup" % "java-statsd-client" % "3.0.2"
 )
 
 
