@@ -31,8 +31,6 @@ class Application(queue: Queue, messageHandlers: List[MessageHandler], statsD: S
   }
 
   def deleteMsg(msg: Message) = {
-    println("===================")
-    println(msg)
     queue.deleteMessage(msg) onComplete {
     case Success(_) => informSuccess(msg)
     case Failure(t) => informError(t.getMessage)
