@@ -3,6 +3,7 @@ package fetcher
 import com.timgroup.statsd.StatsDClient
 import org.specs2.mock.Mockito
 import org.specs2.mutable.Specification
+import org.specs2.specification.{BeforeAfterExample, BeforeExample, Before}
 
 import scala.concurrent.Future
 import scala.util.Try
@@ -13,14 +14,16 @@ class ApplicationTest extends Specification with Mockito {
   val msgHandler = mock[MessageHandler]
   val statsD = mock[StatsDClient]
 
-  val notification = Notification("type", "contentId", "fileId")
+  val notification = Notification("type", "iplayer", "contentId")
   val msg = new Message("receiptHandle", notification)
+
   queue.pollMessage() returns Future.successful(msg)
-  msgHandler.canHandle("contentId") returns true thenReturns false
+  queue.deleteMessage(any[Message]) returns Future.successful {}
+  msgHandler.canHandle("contentId") returns true
   msgHandler.handle(notification) returns Future.successful(Try())
 
   "Fetcher Controller" should {
-    "delegate received messages to to the message handler" in {
+    "delegate received message to to the message handler" in {
       val app = new Application(queue, List(msgHandler), statsD)
 
       app.startPolling()
@@ -30,7 +33,19 @@ class ApplicationTest extends Specification with Mockito {
       }
     }
 
-    "not handle if no available handlers found" in {
+    "delete the message if project id is not iplayer" in {
+      val notification = Notification("type", "other", "contentId")
+      val msg = new Message("receiptHandle", notification)
+      queue.pollMessage() returns Future.successful(msg)
+      val app = new Application(queue, List(msgHandler), statsD)
+
+      app.startPolling()
+
+      there was atLeastOne(queue).deleteMessage(msg)
+      there was no(msgHandler).handle(notification)
+    }
+
+    "not handle the message if no available handlers found" in {
       val msgHandler = mock[MessageHandler]
       msgHandler.canHandle("contentId") returns false
       val app = new Application(queue, List(msgHandler), statsD)
@@ -39,7 +54,7 @@ class ApplicationTest extends Specification with Mockito {
       there was no(msgHandler).handle(notification)
     }
 
-    "not handle if more than one handlers found" in {
+    "not handle the message if more than one handlers found" in {
       val msgHandler1 = mock[MessageHandler]
       val msgHandler2 = mock[MessageHandler]
       msgHandler1.canHandle("contentId") returns true
@@ -51,4 +66,5 @@ class ApplicationTest extends Specification with Mockito {
       there was no(msgHandler2).handle(notification)
     }
   }
+
 }
