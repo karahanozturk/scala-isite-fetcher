@@ -16,7 +16,7 @@ trait RRCParser extends StringContentParser {
     val rrcXml = xml \\ "rrc_label"
     toJsonStr(
       RRC(
-        rrcXml \ "versionPid" text,
+        rrcXml \ "version_pid" text,
         rrcXml \ "short_description" text,
         rrcXml \ "long_description" text,
         rrcXml \ "url" text

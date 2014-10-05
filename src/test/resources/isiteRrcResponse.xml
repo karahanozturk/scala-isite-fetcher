@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="https://production.bbc.co.uk/isite2/contentreader/xml/result">
+	<metadata>
+		<modifiedDateTime>2014-09-19T16:09:51.404Z</modifiedDateTime>
+		<creationDateTime>2014-09-19T16:07:29.836Z</creationDateTime>
+		<type>rrc-labels</type>
+		<fileId>versionPid</fileId>
+		<guid>cde65304-58d7-466d-9760-1e06af9d3c0a</guid>
+	</metadata>
+	<document>
+		<form xmlns="https://production.bbc.co.uk/isite2/project/iplayer/rrc-labels">
+			<rrc_label>
+				<version_pid>versionPid</version_pid>
+				<display_name>Display name</display_name>
+				<short_description>Short description</short_description>
+				<long_description>Long description</long_description>
+				<url>http://url</url>
+			</rrc_label>
+		</form>
+	</document>
+</result>

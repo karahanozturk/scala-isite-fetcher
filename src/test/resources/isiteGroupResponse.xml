@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="https://production.bbc.co.uk/isite2/contentreader/xml/result">
+	<metadata>
+		<modifiedDateTime>2014-09-25T10:36:29.163Z</modifiedDateTime>
+		<creationDateTime>2014-09-10T13:30:28.733Z</creationDateTime>
+		<type>groups</type>
+		<fileId>groupPid</fileId>
+		<guid>1ede1ed5-5ebb-49a1-bf84-41a7f929d5c4</guid>
+	</metadata>
+	<document>
+		<form xmlns="https://production.bbc.co.uk/isite2/project/iplayer/groups">
+			<group>
+				<group_name>London Fashion Week</group_name>
+				<group_pid>groupPid</group_pid>
+				<standard_image>p026gxsq</standard_image>
+				<vertical_image>p027b5fm</vertical_image>
+				<channel>channel</channel>
+				<editorial_label>editorialLabel</editorial_label>
+				<series_stacked>true</series_stacked>
+				<related_links>
+					<text>link title 1</text>
+					<link>http://www.bbc.co.uk/iplayer/groups/p0269bx6</link>
+				</related_links>
+				<related_links>
+					<text>link title 2</text>
+					<link>http://www.bbc.co.uk/iplayer/groups/p0269bx7</link>
+				</related_links>
+			</group>
+		</form>
+	</document>
+</result>
