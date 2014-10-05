@@ -8,7 +8,6 @@ import scala.xml.NodeSeq
 case class ISiteContent(publicationType: String, fileId: String, xml: NodeSeq)
 class FetcherException(val tag: String, msg: String) extends RuntimeException(msg)
 
-
 class Controller(queue: Queue, messageHandlers: List[MessageHandler[_]], client: ISiteClient) {
 
   private def delegateToHandler(msg: Message, response: ISiteResponse) = {
@@ -23,17 +22,14 @@ class Controller(queue: Queue, messageHandlers: List[MessageHandler[_]], client:
     }
   }
 
-  private def getContent(msg: Message) = {
-    client.get(msg.contentId) flatMap {
-      case response@ISiteResponse(200, _, _, _) => delegateToHandler(msg, response)
-      case ISiteResponse(status, _, _, _) => throw new FetcherException(s"isite_responses_$status", "Failed to fetch data from ISite")
-    }
+  private def getContent(msg: Message) = client.get(msg.contentId) flatMap {
+    case response@ISiteResponse(200, _, _, _) => delegateToHandler(msg, response)
+    case ISiteResponse(status, _, _, _) => throw new FetcherException(s"isite_responses_$status", "Failed to fetch data from ISite")
   }
 
-  def startPolling() = {
-    queue pollMessage() flatMap {
-      case msg@Message("iplayer", _, _, _) => getContent(msg)
-      case msg => queue.deleteMessage(msg)
-    }
+  def startPolling() = queue.pollMessage() flatMap {
+    case msg@Message("iplayer", _, _, _) => getContent(msg)
+    case msg => queue.deleteMessage(msg)
   }
+
 }
