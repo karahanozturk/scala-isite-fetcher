@@ -7,7 +7,8 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.xml.{Elem, XML}
 
-case class ISiteResponse(status: Int, contentType: String, fileId: String, xml: Elem)
+case class ISiteResponse(status: Int, body: Option[Body])
+case class Body(contentType: String, fileId: String, xml: Elem)
 
 class ISiteClient(conf: ISiteConfig, http: Http) {
 
@@ -16,8 +17,13 @@ class ISiteClient(conf: ISiteConfig, http: Http) {
     val request = url(uri.toString()).GET
 
     http(request).map(response => {
-      val xml = XML.loadString(response.getResponseBody)
-      ISiteResponse(response.getStatusCode, xml \\ "metadata" \ "type" text, xml \\ "metadata" \ "fileId" text, xml)
+      val status = response.getStatusCode
+      status match {
+        case 200 =>
+          val xml = XML.loadString(response.getResponseBody)
+          ISiteResponse(status, Some(Body(xml \\ "metadata" \ "type" text, xml \\ "metadata" \ "fileId" text, xml)))
+        case _ => ISiteResponse(status, None)
+      }
     })
   }
 }

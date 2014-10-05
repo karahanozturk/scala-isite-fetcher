@@ -4,6 +4,7 @@ import akka.actor.ActorSystem
 import com.timgroup.statsd.StatsDClient
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
+import org.xml.sax.SAXParseException
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -24,6 +25,7 @@ class Server {
         case Success(_) => informSuccess()
         case Failure(t) => t match {
           case t: FetcherException => informError(t.tag, t.getMessage)
+          case t: SAXParseException => informError("parsing_errors", t.getMessage)
           case _ => informError("processing_failures", t.getMessage)
         }
       }

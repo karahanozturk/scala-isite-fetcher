@@ -18,7 +18,7 @@ class ControllerTest extends Specification with Mockito {
       queue.pollMessage() returns Future.successful(msg)
 
       val client = mock[ISiteClient]
-      client.get("contentId") returns Future.successful(ISiteResponse(200, "contentType", "fileId", <xml></xml>))
+      client.get("contentId") returns Future.successful(ISiteResponse(200, Some(Body("contentType", "fileId", <xml></xml>))))
 
       val content = ISiteContent("publish", "fileId", <xml></xml>)
       val msgHandler = mock[MessageHandler[_]]
@@ -53,7 +53,7 @@ class ControllerTest extends Specification with Mockito {
       queue.pollMessage() returns Future.successful(msg)
 
       val client = mock[ISiteClient]
-      client.get("contentId") returns Future.successful(ISiteResponse(200, "contentType", "fileId", <xml></xml>))
+      client.get("contentId") returns Future.successful(ISiteResponse(200, Some(Body("contentType", "fileId", <xml></xml>))))
 
       val msgHandler = mock[MessageHandler[_]]
       msgHandler.canHandle("contentType") returns false
@@ -81,7 +81,7 @@ class ControllerTest extends Specification with Mockito {
       queue.pollMessage() returns Future.successful(msg)
 
       val client = mock[ISiteClient]
-      client.get("contentId") returns Future.successful(ISiteResponse(404, "contentType", "fileId", <xml></xml>))
+      client.get("contentId") returns Future.successful(ISiteResponse(404, None))
 
       val controller = new Controller(queue, List(mock[MessageHandler[_]]), client)
       var caughtOnFailure: Throwable = null
