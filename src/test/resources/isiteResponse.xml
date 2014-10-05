@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="https://production.bbc.co.uk/isite2/contentreader/xml/result">
+  <metadata>
+    <modifiedDateTime>2014-08-18T14:57:19.936Z</modifiedDateTime>
+    <creationDateTime>2014-05-21T10:49:30.157Z</creationDateTime>
+    <type>contentType</type>
+    <fileId>fileId</fileId>
+    <guid>e56fce55-86cc-4f71-aa67-3157ddb70286</guid>
+  </metadata>
+  <document>
+    <form xmlns="https://production.bbc.co.uk/isite2/project/iplayer/someContent">
+      <contentType>
+        <programme>
+          <pid>b00dhlbc</pid>
+        </programme>
+        <programme>
+          <pid>b04g51lc</pid>
+        </programme>
+        <id>iplayer_someContent</id>
+        <programme>
+          <pid>b010jsn2</pid>
+        </programme>
+      </contentType>
+    </form>
+  </document>
+</result>

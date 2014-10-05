@@ -20,7 +20,8 @@ libraryDependencies ++= Seq(
   "com.amazonaws" % "aws-java-sdk" % "1.8.10.2",
   "org.specs2" % "specs2_2.11" % "2.3.11",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.1.0",
-  "com.timgroup" % "java-statsd-client" % "3.0.2"
+  "com.timgroup" % "java-statsd-client" % "3.0.2",
+  "com.netaporter" %% "scala-uri" % "0.4.3"
 )
 
 

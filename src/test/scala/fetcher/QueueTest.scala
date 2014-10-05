@@ -13,7 +13,7 @@ import scala.io.Source
 class QueueTest extends Specification with Mockito {
 
   val sqs = mock[AmazonSQSClient]
-  val qConf = QConfig("url", 1, 1, 1)
+  val qConf = QueueConfig("url", 1, 1, 1)
   val queue = new Queue(sqs, qConf)
 
   val sqsMsg = Source.fromURL(getClass.getResource("/snsNotification")).mkString
@@ -26,8 +26,13 @@ class QueueTest extends Specification with Mockito {
   "Queue" should {
     "extract notification from SQS message" in {
       val msg = Await.result(queue.pollMessage(), scala.concurrent.duration.DurationInt(1000).millis)
-      msg.receiptHandle must equalTo("receiptHandle")
-      msg.notification must equalTo(Notification("publish", "iplayer", "e56fce55-86cc-4f71-aa67-3157ddb70286"))
+      msg must equalTo(Message("iplayer", "publish", "e56fce55-86cc-4f71-aa67-3157ddb70286", "receiptHandle"))
+    }
+
+    "delete message from the SQS" in{
+      val msg = Message("iplayer", "publish", "e56fce55-86cc-4f71-aa67-3157ddb70286", "receiptHandle")
+      Await.result(queue.deleteMessage(msg), scala.concurrent.duration.DurationInt(1000).millis)
+      there was one(sqs).deleteMessage(qConf.url, msg.receiptHandle)
     }
   }
 

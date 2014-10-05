@@ -8,26 +8,27 @@ import org.json4s.jackson.JsonMethods._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-case class Message(receiptHandle: String, notification: Notification)
+case class Message(projectId: String, publishType: String, contentId: String, receiptHandle: String)
 
-class Queue(sqs: AmazonSQSClient, qConf: QConfig) {
+class Queue(sqs: AmazonSQSClient, qConf: QueueConfig) {
 
   implicit val formats = org.json4s.DefaultFormats
+
   def extractString(json: JValue, query: String) = (json \\ query).extract[String]
 
-  def extractNotification(sqsBody: String) = {
-    val snsJson = parse(sqsBody)
-    val snsMsgBody = parse(extractString(snsJson, "Message"))
-    Notification(
-      extractString(snsMsgBody, "type"),
-      extractString(snsMsgBody, "projectId"),
-      extractString(snsMsgBody, "contentId"))
-  }
-
   def pollMessage() = Future {
-    val request = new ReceiveMessageRequest(qConf.url).withWaitTimeSeconds(qConf.waitTimeSeconds).withMaxNumberOfMessages(qConf.maxNumberOfMessages)
+    val request = new ReceiveMessageRequest(qConf.url)
+      .withWaitTimeSeconds(qConf.waitTimeSeconds)
+      .withMaxNumberOfMessages(qConf.maxNumberOfMessages)
     val sqsMsg = sqs.receiveMessage(request).getMessages.get(0)
-    Message(sqsMsg.getReceiptHandle, extractNotification(sqsMsg.getBody))
+    val snsJson = parse(sqsMsg.getBody)
+    val snsMsgBody = parse(extractString(snsJson, "Message"))
+
+    Message(
+      extractString(snsMsgBody, "projectId"),
+      extractString(snsMsgBody, "type"),
+      extractString(snsMsgBody, "contentId"),
+      sqsMsg.getReceiptHandle)
   }
 
   def deleteMessage(msg: Message) = Future {
