@@ -9,7 +9,6 @@ import scala.util.{Try, Failure, Success}
 
 class ControllerTest extends Specification with Mockito {
 
-
   //@todo use beforeEach to reduce code
   "Fetcher Controller" should {
     "delegate received message to the message handler" in {
@@ -90,8 +89,7 @@ class ControllerTest extends Specification with Mockito {
       Try {
         val process = controller.startPolling()
         process onComplete {
-          case Success(_) =>
-            assert(assertion = false, "Should not complete successfully")
+          case Success(_) => assert(assertion = false, "Should not complete successfully")
           case Failure(t) => caughtOnFailure = t
         }
         Await.result(process, scala.concurrent.duration.DurationInt(1000).millis)
