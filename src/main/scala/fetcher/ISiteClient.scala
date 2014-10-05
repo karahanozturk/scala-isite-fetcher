@@ -16,14 +16,11 @@ class ISiteClient(conf: ISiteConfig, http: Http) {
     val uri = conf.baseUrl ? ("contentId" -> contentId) & ("api_key" -> conf.apiKey) & ("allowNonLive" -> true)
     val request = url(uri.toString()).GET
 
-    http(request).map(response => {
-      val status = response.getStatusCode
-      status match {
-        case 200 =>
-          val xml = XML.loadString(response.getResponseBody)
-          ISiteResponse(status, Some(Body(xml \\ "metadata" \ "type" text, xml \\ "metadata" \ "fileId" text, xml)))
-        case _ => ISiteResponse(status, None)
-      }
+    http(request).map(response => response.getStatusCode match {
+      case status@200 =>
+        val xml = XML.loadString(response.getResponseBody)
+        ISiteResponse(status, Some(Body(xml \\ "metadata" \ "type" text, xml \\ "metadata" \ "fileId" text, xml)))
+      case status => ISiteResponse(status, None)
     })
   }
 }
