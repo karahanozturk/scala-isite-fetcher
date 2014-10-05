@@ -13,9 +13,9 @@ class Controller(queue: Queue, msgHandlers: List[MessageHandler[_]], client: ISi
   private def delegateToHandler(msg: Message, body: Body) = msgHandlers.filter(_.canHandle(body contentType)) match {
     case head :: tail =>
       val content = ISiteContent(msg.publishType, body.fileId, body.xml)
-      head handle content flatMap (_ => queue deleteMessage msg)
+      head.handle(content) flatMap (_ => queue deleteMessage msg)
     case Nil =>
-      queue.deleteMessage(msg)
+      queue deleteMessage msg
       throw new FetcherException("processing_failures", "No handler found")
   }
 
@@ -28,5 +28,4 @@ class Controller(queue: Queue, msgHandlers: List[MessageHandler[_]], client: ISi
     case msg@Message("iplayer", _, _, _) => getContent(msg)
     case msg => queue deleteMessage msg
   }
-
 }
