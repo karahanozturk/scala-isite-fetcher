@@ -10,7 +10,7 @@ case class RRCHandler(db: StringDB, conf: MsgHandlerConfig)
   with Publish[String]
   with Unpublish[String]
   with RRCParser
-  with GenerateIdForEachContent {}
+  with DBIdGeneratorForIndividual {}
 
 trait RRCParser extends StringContentParser {
   override def parse(xml: NodeSeq) = {

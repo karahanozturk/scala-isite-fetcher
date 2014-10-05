@@ -10,7 +10,7 @@ case class GroupsHandler(db: StringDB, conf: MsgHandlerConfig)
   with Publish[String]
   with Unpublish[String]
   with GroupParser
-  with GenerateIdForEachContent {}
+  with DBIdGeneratorForIndividual {}
 
 trait GroupParser extends StringContentParser {
   override def parse(xml: NodeSeq) = {

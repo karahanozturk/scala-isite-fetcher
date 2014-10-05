@@ -6,10 +6,10 @@ trait DBIdGenerator {
   def id(content: ISiteContent, conf: MsgHandlerConfig): String
 }
 
-trait GenerateIdForAllContents extends DBIdGenerator {
+trait DBIdGeneratorForSet extends DBIdGenerator {
   override def id(content: ISiteContent, conf: MsgHandlerConfig) = conf.cacheKey
 }
 
-trait GenerateIdForEachContent extends DBIdGenerator {
+trait DBIdGeneratorForIndividual extends DBIdGenerator {
   override def id(content: ISiteContent, conf: MsgHandlerConfig) = conf.cacheKey + content.fileId
 }
