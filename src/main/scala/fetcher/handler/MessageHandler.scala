@@ -11,6 +11,7 @@ trait MessageHandler[A] {
 
   def publish(content: ISiteContent) = {}
   def unpublish(content: ISiteContent) = {}
+  def id(content: ISiteContent) = conf.cacheKeyPrefix + content.fileId.replace("iplayer_", "")
 
   def canHandle(`type`: String) = `type` == conf.msgType
 
@@ -22,10 +23,10 @@ trait MessageHandler[A] {
   }
 }
 
-trait Publish[A] extends MessageHandler[A] with ContentParser[A] with DBIdGenerator {
-  override def publish(content: ISiteContent) = db.save(id(content, conf), parse(content.xml))
+trait Publish[A] extends MessageHandler[A] with ContentParser[A] {
+  override def publish(content: ISiteContent) = db.save(id(content), parse(content.xml))
 }
 
-trait Unpublish[A] extends MessageHandler[A] with DBIdGenerator {
-  override def unpublish(content: ISiteContent) = db.remove(id(content, conf))
+trait Unpublish[A] extends MessageHandler[A] {
+  override def unpublish(content: ISiteContent) = db.remove(id(content))
 }

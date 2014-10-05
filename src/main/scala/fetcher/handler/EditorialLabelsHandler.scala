@@ -5,5 +5,4 @@ import fetcher.{MsgHandlerConfig, SetDB}
 case class EditorialLabelsHandler(db: SetDB, conf: MsgHandlerConfig)
   extends MessageHandler[Set[String]]
   with Publish[Set[String]]
-  with SetContentParser
-  with DBIdGeneratorForSet {}
+  with SetContentParser {}
