@@ -27,8 +27,7 @@ class Controller(queue: Queue, messageHandlers: List[MessageHandler[_]], client:
   private def getContent(msg: Message) = {
     client.get(msg.contentId) flatMap {
       case response@ISiteResponse(200, _, _, _) => delegateToHandler(msg, response)
-      case ISiteResponse(status, _, _, _) =>
-        throw new FetcherException(s"isite_responses_$status", "Failed to fetch data from ISite")
+      case ISiteResponse(status, _, _, _) => throw new FetcherException(s"isite_responses_$status", "Failed to fetch data from ISite")
     }
   }
 
