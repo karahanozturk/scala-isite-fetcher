@@ -12,7 +12,6 @@ trait MessageHandler[A] {
   def publish(content: ISiteContent) = {}
   def unpublish(content: ISiteContent) = {}
   def id(content: ISiteContent) = conf.cacheKeyPrefix + content.fileId.replace("iplayer_", "")
-
   def canHandle(`type`: String) = `type` == conf.msgType
 
   def handle(content: ISiteContent) = Future {

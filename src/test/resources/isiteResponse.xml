@@ -11,14 +11,14 @@
     <form xmlns="https://production.bbc.co.uk/isite2/project/iplayer/someContent">
       <contentType>
         <programme>
-          <pid>b00dhlbc</pid>
+          <pid>pid1</pid>
         </programme>
         <programme>
-          <pid>b04g51lc</pid>
+          <pid>pid2</pid>
         </programme>
         <id>iplayer_someContent</id>
         <programme>
-          <pid>b010jsn2</pid>
+          <pid>pid3</pid>
         </programme>
       </contentType>
     </form>
