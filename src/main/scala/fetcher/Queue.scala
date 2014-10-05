@@ -11,9 +11,7 @@ import scala.concurrent.Future
 case class Message(projectId: String, publishType: String, contentId: String, receiptHandle: String)
 
 class Queue(sqs: AmazonSQSClient, qConf: QueueConfig) {
-
   implicit val formats = org.json4s.DefaultFormats
-
   def extractString(json: JValue, query: String) = (json \\ query).extract[String]
 
   def pollMessage() = Future {
