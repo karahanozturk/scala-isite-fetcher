@@ -3,7 +3,6 @@ package fetcher
 import fetcher.handler.MessageHandler
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.xml.NodeSeq
 
 case class ISiteContent(publicationType: String, fileId: String, xml: NodeSeq)
