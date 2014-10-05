@@ -30,7 +30,7 @@ class MessageHandlerTest extends Specification with Mockito {
 
     "generate persistence id from the content and configuration" in {
       val handler = new TestMsgHandler(db, conf)
-      handler.id(ISiteContent("unpublish", "fileId", <xml></xml>)) must equalTo("cacheKeyPrefix:fileId")
+      handler.id(ISiteContent("unpublish", "iplayer_fileId", <xml></xml>)) must equalTo("cacheKeyPrefix:fileId")
     }
   }
 
