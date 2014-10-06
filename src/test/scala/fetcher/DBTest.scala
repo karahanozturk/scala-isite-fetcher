@@ -12,7 +12,7 @@ class DBTest extends Specification with Mockito {
     val cache = mock[RedisClient]
     val setDB = SetDB(cache)
 
-    "replace the set when saved" in{
+    "replace the set when saved" in {
       setDB.save("key", value)
 
       there was one(cache).pipeline { p =>
@@ -21,7 +21,7 @@ class DBTest extends Specification with Mockito {
       }
     }
 
-    "delete the set when remove called" in{
+    "delete the set when remove called" in {
       setDB.remove("key")
       there was one(cache).del(key)
     }
@@ -33,12 +33,12 @@ class DBTest extends Specification with Mockito {
     val cache = mock[RedisClient]
     val stringDB = StringDB(cache)
 
-    "sets the string value by the given key when saved" in{
+    "sets the string value by the given key when saved" in {
       stringDB.save("key", value)
       there was one(cache).set(key, value)
     }
 
-    "delete the string value when remove called" in{
+    "delete the string value when remove called" in {
       stringDB.remove("key")
       there was one(cache).del(key)
     }
