@@ -1,0 +1,41 @@
+{
+    "blackList": {
+        "msgType": "blacklisting",
+        "cacheKeyPrefix": "ibl:v2:"
+    },
+    "editorialLabels": {
+        "msgType": "editorial-labels",
+        "cacheKeyPrefix": "ibl:v2:editorial-labels:"
+    },
+    "rrc": {
+        "msgType": "groups",
+        "cacheKeyPrefix": "ibl:v2:group:"
+    },
+    "groups": {
+        "msgType": "rrc-labels",
+        "cacheKeyPrefix": "ibl:v2:rrc:"
+    },
+    "cacheHost": "localhost",
+    "logLevel": "info",
+    "logFile": "application.log",
+    "certificate": {
+        "path": "/etc/pki/ibl.p12",
+        "password": "ibl"
+    },
+    "isite": {
+        "baseUrl": "https://api.live.bbc.co.uk/isite2-content-reader",
+        "apiKey": "apiKey"
+    },
+    "stats": {
+        "host": "54.76.110.149",
+        "port": 8125,
+        "prefix": "bbc.ibl.isite_fetcher.dev."
+    },
+    "queue": {
+        "url": "https://sqs.eu-west-1.amazonaws.com/256385644360/test",
+        "pollingDelay": 5,
+        "pollingRetryDelay": 1000,
+        "maxNumberOfMessages": 1,
+        "waitTimeSeconds": 20
+    }
+}

@@ -11,7 +11,7 @@ trait DB[A] {
 case class SetDB(cache: RedisClient) extends DB[Set[String]] {
   def save(key: String, value: Set[String]) = cache.pipeline { pipeline =>
     pipeline.del(key)
-    pipeline.sadd(key, value)
+    pipeline.sadd(key, value.head, value.tail.toArray:_*)
   }
 }
 

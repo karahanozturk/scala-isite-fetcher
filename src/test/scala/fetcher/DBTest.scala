@@ -17,7 +17,7 @@ class DBTest extends Specification with Mockito {
 
       there was one(cache).pipeline { p =>
         p.del(key)
-        p.sadd(key, value)
+        p.sadd(key, value.head, value.tail.toArray:_*)
       }
     }
 

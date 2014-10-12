@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result xmlns="https://production.bbc.co.uk/isite2/contentreader/xml/result">
+  <metadata>
+    <modifiedDateTime>2014-08-18T14:57:19.936Z</modifiedDateTime>
+    <creationDateTime>2014-05-21T10:49:30.157Z</creationDateTime>
+    <type>blacklisting</type>
+    <fileId>iplayer_blacklist</fileId>
+    <guid>e56fce55-86cc-4f71-aa67-3157ddb70286</guid>
+  </metadata>
+  <document>
+    <form xmlns="https://production.bbc.co.uk/isite2/project/iplayer/blacklisting">
+      <blacklist>
+        <programme>
+          <pid>pid1</pid>
+        </programme>
+        <programme>
+          <pid>pid2</pid>
+        </programme>
+        <id>iplayer_blacklist</id>
+        <programme>
+          <pid>pid3</pid>
+        </programme>
+      </blacklist>
+    </form>
+  </document>
+</result>

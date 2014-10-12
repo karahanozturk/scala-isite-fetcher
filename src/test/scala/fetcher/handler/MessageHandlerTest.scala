@@ -9,7 +9,7 @@ import scala.xml.NodeSeq
 class MessageHandlerTest extends Specification with Mockito {
 
   val db = mock[DB[String]]
-  val conf = MsgHandlerConfig("msgType", "xmlContentType", "cacheKeyPrefix:")
+  val conf = MsgHandlerConfig("msgType", "cacheKeyPrefix:")
 
   "MessageHandler" should {
     "call publish when publish type is 'publish'" in {
